@@ -1,8 +1,5 @@
-
-
 import os
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
-
 
 import numpy as np
 from io import BytesIO
@@ -45,7 +42,7 @@ parent_dir = os.path.dirname(os.path.abspath(__file__))
 build_dir = os.path.join(parent_dir, "st_audiorec/frontend/build")
 st_audiorec = components.declare_component("st_audiorec", path=build_dir)
 
-
+st.markdown('---') 
 left_column, right_column  = st.columns(2)
 with left_column:
     # STREAMLIT AUDIO RECORDER Instance
@@ -58,12 +55,19 @@ with left_column:
             val = np.array(val)             # convert to np array
             sorted_ints = val[ind]
             stream = BytesIO(b"".join([int(v).to_bytes(1, "big") for v in sorted_ints]))
-            # read the stream as a wav file
-            audio = stream.read()
+            wav_bytes = stream.read()
+            with open("audio.wav", "wb") as audio_file:
+                audio_file.write(wav_bytes)
 
 with right_column:
     if st.button('Transcribe'):
         with st.spinner('Transcribing...'):
-            text = inference(audio)
+            text =  inference("audio.wav")
             st.write(text)
+
+st.markdown('---') 
+st.markdown('Whisper model by  [**OpenAI**](https://github.com/openai/whisper) using [**Streamlit**](https://streamlit.io/).')
+
+
+
 

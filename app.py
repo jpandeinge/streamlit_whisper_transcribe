@@ -20,7 +20,7 @@ st.set_page_config(
 )
 
 st.markdown("<h1 style='text-align: center;'> 🤫 Whisper</h1>", unsafe_allow_html=True)
-st.markdogitwn("<small style='text-align: center;'> Whisper is a general-purpose audio speech recognition model. Its trained on a large dataset of diverse audio and is also a  mili-task model that can perform multilingual speech recognition as well as speech translation and language identification. It is also a  mili-task model that can perform multilingual speech recognition as well as speech translation and language identification</small>", unsafe_allow_html=True)
+st.markdown("<small style='text-align: center;'> Whisper is a general-purpose audio speech recognition model. Its trained on a large dataset of diverse audio and is also a  mili-task model that can perform multilingual speech recognition as well as speech translation and language identification. It is also a  mili-task model that can perform multilingual speech recognition as well as speech translation and language identification</small>", unsafe_allow_html=True)
 
 
 

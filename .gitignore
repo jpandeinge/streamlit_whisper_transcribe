@@ -151,3 +151,6 @@ dmypy.json
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# ignore wav files
+*.wav

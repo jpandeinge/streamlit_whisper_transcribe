@@ -1,6 +1,6 @@
 import os
+import time
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
-
 import numpy as np
 from io import BytesIO
 import streamlit as st
@@ -56,18 +56,17 @@ with left_column:
             sorted_ints = val[ind]
             stream = BytesIO(b"".join([int(v).to_bytes(1, "big") for v in sorted_ints]))
             wav_bytes = stream.read()
+    
+            # get the format of the audio as wav or mp3
             with open("audio.wav", "wb") as audio_file:
                 audio_file.write(wav_bytes)
-
+        
 with right_column:
     if st.button('Transcribe'):
-        with st.spinner('Transcribing...'):
-            text =  inference("audio.wav")
-            st.write(text)
+        with st.spinner('Inference in progress...'):
+            time.sleep(1)
+            text = inference("audio.wav")
+            st.success(f"{text}")
 
 st.markdown('---') 
 st.markdown('Whisper model by  [**OpenAI**](https://github.com/openai/whisper) using [**Streamlit**](https://streamlit.io/).')
-
-
-
-

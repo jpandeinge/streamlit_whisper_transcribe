@@ -69,4 +69,14 @@ with right_column:
             st.success(f"{text}")
 
 st.markdown('---') 
-st.markdown('Whisper model by  [**OpenAI**](https://github.com/openai/whisper) using [**Streamlit**](https://streamlit.io/).')
+st.markdown("<small style='text-align: center;'>  Whisper model by  [**OpenAI**](https://github.com/openai/whisper) using [**Streamlit**](https://streamlit.io/). </small>", unsafe_allow_html=True) 
+
+# ---- HIDE STREAMLIT STYLE ----
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)

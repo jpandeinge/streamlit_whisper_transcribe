@@ -1,5 +1,7 @@
 import os
 import time
+import pathlib
+import datetime
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 import numpy as np
 from io import BytesIO
@@ -7,6 +9,8 @@ import streamlit as st
 import streamlit.components.v1 as components
 import whisper
 
+
+AUDIO_DIR = pathlib.Path('audio')
 
 # set the page layout
 st.set_page_config(
@@ -49,23 +53,28 @@ with left_column:
     val = st_audiorec()
 
     if isinstance(val, dict):  # retrieve audio data
-        with st.spinner('retrieving audio-recording...'):
-            ind, val = zip(*val['arr'].items())
-            ind = np.array(ind, dtype=int)  # convert to np array
-            val = np.array(val)             # convert to np array
-            sorted_ints = val[ind]
-            stream = BytesIO(b"".join([int(v).to_bytes(1, "big") for v in sorted_ints]))
-            wav_bytes = stream.read()
-    
-            # get the format of the audio as wav or mp3
-            with open("audio.wav", "wb") as audio_file:
-                audio_file.write(wav_bytes)
+                with st.spinner('retrieving audio-recording...'):
+                    ind, val = zip(*val['arr'].items())
+                    ind = np.array(ind, dtype=int)  # convert to np array
+                    val = np.array(val)             # convert to np array
+                    sorted_ints = val[ind]
+                    stream = BytesIO(b"".join([int(v).to_bytes(1, "big") for v in sorted_ints]))
+                    wav_bytes = stream.read()
+                    now = datetime.datetime.now()
+                    audio_name = f"audio_{now.strftime('%Y%m%d_%H%M%S')}.wav" # name audio according to time recorded
+                    audio_path = AUDIO_DIR / audio_name
+                    with open(audio_path, "wb") as audio_file:
+                        audio_file.write(wav_bytes)
+                    st.success('audio successfully saved!') # moved this line
         
 with right_column:
     if st.button('Transcribe'):
         with st.spinner('Inference in progress...'):
             time.sleep(1)
-            text = inference("audio.wav")
+            audio_files = [f for f in os.listdir(AUDIO_DIR) if f.endswith('.wav')]
+            latest_audio = max(audio_files, key=lambda x: os.path.getctime(os.path.join(AUDIO_DIR, x)))
+            latest_audio_path = AUDIO_DIR / latest_audio
+            text = inference(latest_audio_path)
             st.success(f"{text}")
 
 st.markdown('---') 

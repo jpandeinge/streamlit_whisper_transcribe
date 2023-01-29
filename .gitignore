@@ -152,5 +152,4 @@ dmypy.json
 ehthumbs.db
 Thumbs.db
 
-# ignore wav files
-*.wav
+
